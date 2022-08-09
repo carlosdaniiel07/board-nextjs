@@ -1,11 +1,17 @@
-import type { NextPage } from 'next'
+import type { NextPage } from 'next';
+import Head from 'next/head';
 
 const Home: NextPage = () => {
   return (
-    <div>
-      <span>Next.js</span>
-    </div>
-  )
-}
+    <>
+      <Head>
+        <title>Board - Organizando suas tarefas</title>
+      </Head>
+      <div>
+        <span>Next.js</span>
+      </div>
+    </>
+  );
+};
 
-export default Home
+export default Home;
