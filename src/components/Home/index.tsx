@@ -14,7 +14,7 @@ export function Home(props: HomeProps) {
         title='Board'
       />
       <span className={styles.title}>
-        Uma ferramenta para seu dia a dia Escreva, planeje e organize-se..
+        Uma ferramenta para seu dia a dia. Escreva, planeje e organize-se..
       </span>
       <span className={styles.helper}>
         <strong>100% Gratuita</strong> e online
