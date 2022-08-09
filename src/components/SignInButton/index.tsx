@@ -5,13 +5,14 @@ import { FiX } from 'react-icons/fi';
 import styles from './styles.module.scss';
 
 type SignInButtonProps = {
-  logged: boolean;
+  isLogged: boolean;
+  toggleLogin(): void;
 };
 
-export function SignInButton({ logged }: SignInButtonProps) {
+export function SignInButton({ isLogged, toggleLogin }: SignInButtonProps) {
   return (
-    <button type='button' className={styles.button} onClick={() => {}}>
-      {logged ? (
+    <button type='button' className={styles.button} onClick={toggleLogin}>
+      {isLogged ? (
         <>
           <Image
             src='https://sujeitoprogramador.com/steve.png'
