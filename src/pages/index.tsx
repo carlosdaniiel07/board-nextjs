@@ -1,15 +1,16 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { Home } from '../components';
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
     <>
       <Head>
         <title>Board - Organizando suas tarefas</title>
       </Head>
-      <div></div>
+      <Home />
     </>
   );
 };
 
-export default Home;
+export default HomePage;
