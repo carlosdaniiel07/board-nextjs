@@ -6,7 +6,7 @@ type HomeProps = {};
 
 export function Home(props: HomeProps) {
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
       <Image
         src='/images/board-user.svg'
         width={504}
@@ -22,6 +22,6 @@ export function Home(props: HomeProps) {
       </span>
 
       <Supporters count={4} />
-    </div>
+    </section>
   );
 }
