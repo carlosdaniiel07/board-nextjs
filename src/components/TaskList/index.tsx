@@ -1,29 +1,37 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { FiCalendar, FiEdit2, FiTrash } from 'react-icons/fi';
+import { useTask } from '../../context';
+import { TaskModel } from '../../models';
 
 import styles from './styles.module.scss';
 
 type TaskListProps = {};
 
 export function TaskList(props: TaskListProps) {
+  const { tasks, removeTask } = useTask();
+
   return (
     <div className={styles.container}>
-      <TaskItem />
-      <TaskItem />
-      <TaskItem />
+      {tasks.map((task) => (
+        <TaskItem
+          key={task.id}
+          data={task}
+          onRemove={() => removeTask(task.id)}
+        />
+      ))}
     </div>
   );
 }
 
-function TaskItem() {
+type TaskItemProps = {
+  data: TaskModel;
+  onRemove(): void;
+};
+
+function TaskItem({ data, onRemove }: TaskItemProps) {
   return (
     <div className={styles.task}>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur
-        aliquam tempora blanditiis dolorem, fugit repudiandae voluptatibus
-        autem, vel id a soluta ipsum quod distinctio quae exercitationem,
-        tempore veniam quasi et?
-      </p>
+      <p>{data.description}</p>
       <div className={styles.footer}>
         <div>
           <div className={styles.date}>
@@ -34,7 +42,7 @@ function TaskItem() {
             <FiEdit2 color='#FFFFFF' size={18} />
           </ActionButton>
         </div>
-        <ActionButton label='Excluir'>
+        <ActionButton label='Excluir' onClick={onRemove}>
           <FiTrash color='#FF3636' size={18} />
         </ActionButton>
       </div>
@@ -44,12 +52,17 @@ function TaskItem() {
 
 type ActionButtonProps = {
   label: string;
+  onClick?(): void;
   children: ReactElement;
 };
 
-function ActionButton({ label, children }: ActionButtonProps) {
+function ActionButton({ label, onClick, children }: ActionButtonProps) {
   return (
-    <button type='button' className={styles.actionButton}>
+    <button
+      type='button'
+      className={styles.actionButton}
+      onClick={() => onClick?.()}
+    >
       {children}
       <span>{label}</span>
     </button>
