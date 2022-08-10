@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { Supporters } from '../Supporters';
 import styles from './styles.module.scss';
 
 type HomeProps = {};
@@ -19,6 +20,8 @@ export function Home(props: HomeProps) {
       <span className={styles.helper}>
         <strong>100% Gratuita</strong> e online
       </span>
+
+      <Supporters count={4} />
     </div>
   );
 }
