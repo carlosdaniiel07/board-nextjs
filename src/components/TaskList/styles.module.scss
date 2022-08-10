@@ -1,0 +1,66 @@
+.container {
+  padding-top: 3rem;
+
+  .task {
+    background-color: #20212c;
+    border: 1px solid #20212c;
+    padding: 1.5rem;
+    color: #f2f6fc;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      border: 1px solid #ffb800;
+    }
+
+    & + .task {
+      margin-top: 1.5rem;
+    }
+
+    p {
+      line-height: 150%;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+
+      :first-child {
+        display: flex;
+      }
+
+      .date {
+        display: flex;
+        align-items: center;
+        color: #ffb800;
+        margin-right: 2rem;
+
+        span {
+          margin-left: 0.5rem;
+        }
+      }
+
+      .actionButton {
+        display: flex;
+        align-items: center;
+        background: transparent;
+        outline: none;
+        border: 0;
+        transition: filter 0.2s;
+
+        &:hover {
+          filter: brightness(0.8);
+        }
+
+        span {
+          color: #ffffff;
+          margin-left: 0.5rem;
+        }
+      }
+    }
+  }
+}
