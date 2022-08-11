@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Board, ThankYou } from '../../components';
+import { Board, SupportButton, ThankYou } from '../../components';
 
 const BoardPage: NextPage = () => {
   return (
@@ -11,6 +11,7 @@ const BoardPage: NextPage = () => {
       <section>
         <Board />
         <ThankYou />
+        <SupportButton />
       </section>
     </>
   );
