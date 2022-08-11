@@ -12,13 +12,19 @@ export function TaskList(props: TaskListProps) {
 
   return (
     <div className={styles.container}>
-      {tasks.map((task) => (
-        <TaskItem
-          key={task.id}
-          data={task}
-          onRemove={() => removeTask(task.id)}
-        />
-      ))}
+      {tasks.length ? (
+        tasks.map((task) => (
+          <TaskItem
+            key={task.id}
+            data={task}
+            onRemove={() => removeTask(task.id)}
+          />
+        ))
+      ) : (
+        <div className={styles.info}>
+          <span>Você ainda não tem nenhuma tarefa cadastrada!</span>
+        </div>
+      )}
     </div>
   );
 }
