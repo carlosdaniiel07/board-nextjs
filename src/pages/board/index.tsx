@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Board } from '../../components';
+import { Board, ThankYou } from '../../components';
 
 const BoardPage: NextPage = () => {
   return (
@@ -8,7 +8,10 @@ const BoardPage: NextPage = () => {
       <Head>
         <title>Minhas tarefas - Board</title>
       </Head>
-      <Board />
+      <section>
+        <Board />
+        <ThankYou />
+      </section>
     </>
   );
 };

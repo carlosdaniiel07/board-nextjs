@@ -1,0 +1,22 @@
+.container {
+  margin-top: 2rem;
+  background-color: #17181f;
+  padding: 2rem;
+  border-radius: 6px;
+
+  h3 {
+    color: #ffb800;
+    font-size: 1.3rem;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    margin-top: 1.5rem;
+
+    span {
+      color: #ffffff;
+      margin-left: 0.5rem;
+    }
+  }
+}
