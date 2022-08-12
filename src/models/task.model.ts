@@ -1,5 +1,6 @@
 export type TaskModel = {
-  id: string;
+  id?: string;
   description: string;
+  userId: number;
   createdAt: Date;
 };

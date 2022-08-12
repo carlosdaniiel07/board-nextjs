@@ -1,10 +1,12 @@
 import type { AppProps } from 'next/app';
-
-import '../styles/global.scss';
+import { SessionProvider } from 'next-auth/react';
+import { ToastContainer } from 'react-toastify';
 
 import { Header, Content } from '../components';
-import { SessionProvider } from 'next-auth/react';
 import { TaskProvider } from '../context';
+
+import '../styles/global.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
@@ -14,6 +16,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <Content>
           <Component {...pageProps} />
         </Content>
+        <ToastContainer position='top-center' autoClose={3000} />
       </TaskProvider>
     </SessionProvider>
   );
