@@ -10,4 +10,20 @@ export default NextAuth({
       clientSecret: environment.GITHUB_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      return true;
+    },
+    async session({ session, token }) {
+      try {
+        const userId = token.sub;
+        return {
+          ...session,
+          userId,
+        };
+      } catch (err) {
+        return session;
+      }
+    },
+  },
 });
