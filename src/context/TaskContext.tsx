@@ -17,7 +17,7 @@ const DEFAULT_VALUE: TaskContextProps = {
 
 export const TaskContext = React.createContext<TaskContextProps>(DEFAULT_VALUE);
 
-export function TaskProvider({ children }: { children: ReactElement }) {
+export function TaskProvider({ children }: { children: ReactElement | ReactElement[] }) {
   const [tasks, setTasks] = useState<TaskModel[]>([]);
 
   const addTask = (description: string): void => {
