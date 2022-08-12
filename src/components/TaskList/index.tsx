@@ -17,7 +17,7 @@ export function TaskList(props: TaskListProps) {
           <TaskItem
             key={task.id}
             data={task}
-            onRemove={() => removeTask(task.id)}
+            onRemove={() => removeTask(task.id as string)}
           />
         ))
       ) : (
