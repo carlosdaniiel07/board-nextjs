@@ -4,10 +4,13 @@ import Image from 'next/image';
 import { SignInButton } from '../SignInButton';
 
 import styles from './styles.module.scss';
+import { useSession } from 'next-auth/react';
 
 type HeaderProps = {};
 
 export function Header(props: HeaderProps) {
+  const { data: session } = useSession();
+
   return (
     <header className={styles.container}>
       <div className={styles.content}>
@@ -25,9 +28,11 @@ export function Header(props: HeaderProps) {
           <Link href='/'>
             <a>Home</a>
           </Link>
-          <Link href='/board'>
-            <a>Meu Board</a>
-          </Link>
+          {session?.user && (
+            <Link href='/board'>
+              <a>Meu Board</a>
+            </Link>
+          )}
         </nav>
 
         <SignInButton />
