@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "dayjs": "^1.11.5",
     "firebase": "^9.9.2",
     "next": "12.2.4",
     "next-auth": "^4.10.3",

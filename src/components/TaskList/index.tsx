@@ -1,6 +1,7 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 import { FiCalendar, FiEdit2, FiTrash } from 'react-icons/fi';
 import { useTask } from '../../context';
+import helpers from '../../helpers';
 import { TaskModel } from '../../models';
 
 import styles from './styles.module.scss';
@@ -35,6 +36,10 @@ type TaskItemProps = {
 };
 
 function TaskItem({ data, onRemove }: TaskItemProps) {
+  const formatDate = (date?: Date): string => {
+    return helpers.format(date, 'DD [de] MMMM YYYY');
+  };
+
   return (
     <div className={styles.task}>
       <p>{data.description}</p>
@@ -42,7 +47,7 @@ function TaskItem({ data, onRemove }: TaskItemProps) {
         <div>
           <div className={styles.date}>
             <FiCalendar color='#FFB800' size={18} />
-            <span>17 de Julho 2021</span>
+            <span>{formatDate(data.createdAt)}</span>
           </div>
           <ActionButton label='Editar'>
             <FiEdit2 color='#FFFFFF' size={18} />
