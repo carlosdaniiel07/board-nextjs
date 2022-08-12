@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { Home } from '../components';
 
@@ -14,3 +14,11 @@ const HomePage: NextPage = () => {
 };
 
 export default HomePage;
+
+export const getStaticProps: GetStaticProps = async () => {
+  const refreshTimeInSeconds = 60 * 60;
+  return {
+    props: {},
+    revalidate: refreshTimeInSeconds,
+  };
+};
