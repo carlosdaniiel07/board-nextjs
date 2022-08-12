@@ -1,6 +1,14 @@
-import { addDoc, collection } from 'firebase/firestore';
+import React, { ReactElement, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import React, { ReactElement, useState } from 'react';
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+  deleteDoc,
+  doc,
+} from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
 import { TaskModel } from '../models';
@@ -28,31 +36,65 @@ export function TaskProvider({
   const [tasks, setTasks] = useState<TaskModel[]>([]);
   const { data: session } = useSession();
 
-  const addTask = async (description: string): Promise<void> => {
-    const task: TaskModel = {
-      description,
-      userId: Number(session?.userId),
-      createdAt: new Date(),
-    };
-    const document = await toast.promise(
-      addDoc(collection(firestore, 'tasks'), task),
-      {
-        pending: 'Criando tarefa...',
-        success: 'Tarefa criada com sucesso',
-        error: 'Ocorreu um erro ao criar a tarefa',
+  useEffect(() => {
+    const loadTasks = async (): Promise<void> => {
+      try {
+        const userId = Number(session?.userId);
+        const dbQuery = query(
+          collection(firestore, 'tasks'),
+          where('userId', '==', userId)
+        );
+        const querySnapshot = await getDocs(dbQuery);
+        const data: TaskModel[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const docData = doc.data();
+          data.push({
+            ...(docData as TaskModel),
+            createdAt: new Date(docData.createdAt.seconds * 1000),
+            id: doc.id,
+          });
+        });
+
+        setTasks(data);
+      } catch (err) {
+        toast.error('Ocorreu um erro ao carregar a lista de tarefas');
       }
-    );
-    const createdTask: TaskModel = {
-      ...task,
-      id: document.id,
     };
 
-    setTasks([...tasks, createdTask]);
+    loadTasks();
+  }, [session?.userId]);
+
+  const addTask = async (description: string): Promise<void> => {
+    try {
+      const task: TaskModel = {
+        description,
+        userId: Number(session?.userId),
+        createdAt: new Date(),
+      };
+      const document = await addDoc(collection(firestore, 'tasks'), task);
+      const createdTask: TaskModel = {
+        ...task,
+        id: document.id,
+      };
+
+      toast.success('Tarefa registrada com sucesso');
+      setTasks([...tasks, createdTask]);
+    } catch (err) {
+      toast.error('Ocorreu um erro ao registrar a tarefa');
+    }
   };
 
-  const removeTask = (id: string): void => {
-    const newTasks = [...tasks.filter((task) => task.id !== id)];
-    setTasks(newTasks);
+  const removeTask = async (id: string): Promise<void> => {
+    try {
+      const newTasks = [...tasks.filter((task) => task.id !== id)];
+
+      await deleteDoc(doc(firestore, 'tasks', id));
+      toast.success('Tarefa removida com sucesso');
+      setTasks(newTasks);
+    } catch (err) {
+      toast.error('Ocorreu um erro ao remover a tarefa');
+    }
   };
 
   return (
