@@ -17,13 +17,13 @@ import { firestore } from '../services/firebase';
 type TaskContextProps = {
   tasks: TaskModel[];
   addTask(description: string): Promise<void>;
-  removeTask(id: string): void;
+  removeTask(id: string): Promise<void>;
 };
 
 const DEFAULT_VALUE: TaskContextProps = {
   tasks: [],
   addTask: async () => {},
-  removeTask: () => {},
+  removeTask: async () => {},
 };
 
 export const TaskContext = React.createContext<TaskContextProps>(DEFAULT_VALUE);
