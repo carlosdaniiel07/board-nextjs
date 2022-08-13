@@ -15,11 +15,7 @@ export function TaskList(props: TaskListProps) {
     <div className={styles.container}>
       {tasks.length ? (
         tasks.map((task) => (
-          <TaskItem
-            key={task.id}
-            data={task}
-            onRemove={() => removeTask(task.id as string)}
-          />
+          <TaskItem key={task.id} data={task} onRemove={removeTask} />
         ))
       ) : (
         <div className={styles.info}>
@@ -32,7 +28,7 @@ export function TaskList(props: TaskListProps) {
 
 type TaskItemProps = {
   data: TaskModel;
-  onRemove(): void;
+  onRemove(id: string): Promise<void>;
 };
 
 function TaskItem({ data, onRemove }: TaskItemProps) {
@@ -53,7 +49,7 @@ function TaskItem({ data, onRemove }: TaskItemProps) {
             <FiEdit2 color='#FFFFFF' size={18} />
           </ActionButton>
         </div>
-        <ActionButton label='Excluir' onClick={onRemove}>
+        <ActionButton label='Excluir' onClick={() => onRemove(data.id as string)}>
           <FiTrash color='#FF3636' size={18} />
         </ActionButton>
       </div>
