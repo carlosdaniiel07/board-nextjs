@@ -9,13 +9,21 @@ import styles from './styles.module.scss';
 type TaskListProps = {};
 
 export function TaskList(props: TaskListProps) {
-  const { tasks, removeTask } = useTask();
+  const { tasks, setEdit, removeTask } = useTask();
 
   return (
     <div className={styles.container}>
       {tasks.length ? (
         tasks.map((task) => (
-          <TaskItem key={task.id} data={task} onRemove={removeTask} />
+          <TaskItem
+            key={task.id}
+            data={task}
+            onEdit={() => {
+              helpers.scrollToTop();
+              setEdit(task);
+            }}
+            onRemove={() => removeTask(task.id as string)}
+          />
         ))
       ) : (
         <div className={styles.info}>
@@ -28,10 +36,11 @@ export function TaskList(props: TaskListProps) {
 
 type TaskItemProps = {
   data: TaskModel;
-  onRemove(id: string): Promise<void>;
+  onEdit(): void;
+  onRemove(): Promise<void>;
 };
 
-function TaskItem({ data, onRemove }: TaskItemProps) {
+function TaskItem({ data, onEdit, onRemove }: TaskItemProps) {
   const formatDate = (date?: Date): string => {
     return helpers.format(date, 'DD [de] MMMM YYYY');
   };
@@ -45,11 +54,11 @@ function TaskItem({ data, onRemove }: TaskItemProps) {
             <FiCalendar color='#FFB800' size={18} />
             <span>{formatDate(data.createdAt)}</span>
           </div>
-          <ActionButton label='Editar'>
+          <ActionButton label='Editar' onClick={onEdit}>
             <FiEdit2 color='#FFFFFF' size={18} />
           </ActionButton>
         </div>
-        <ActionButton label='Excluir' onClick={() => onRemove(data.id as string)}>
+        <ActionButton label='Excluir' onClick={onRemove}>
           <FiTrash color='#FF3636' size={18} />
         </ActionButton>
       </div>

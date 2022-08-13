@@ -8,6 +8,7 @@ import {
   where,
   deleteDoc,
   doc,
+  setDoc,
 } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
@@ -16,13 +17,18 @@ import { firestore } from '../services/firebase';
 
 type TaskContextProps = {
   tasks: TaskModel[];
+  taskInEditing?: TaskModel;
   addTask(description: string): Promise<void>;
+  updateTask(id: string, task: TaskModel): Promise<void>;
+  setEdit(task?: TaskModel): void;
   removeTask(id: string): Promise<void>;
 };
 
 const DEFAULT_VALUE: TaskContextProps = {
   tasks: [],
   addTask: async () => {},
+  updateTask: async () => {},
+  setEdit: () => {},
   removeTask: async () => {},
 };
 
@@ -34,11 +40,15 @@ export function TaskProvider({
   children: ReactElement | ReactElement[];
 }) {
   const [tasks, setTasks] = useState<TaskModel[]>([]);
+  const [taskInEditing, setTaskInEditing] = useState<TaskModel>();
+
   const { data: session } = useSession();
 
   useEffect(() => {
     const loadTasks = async (): Promise<void> => {
       try {
+        console.debug('Carregando tarefas...');
+
         const userId = Number(session?.userId);
         const dbQuery = query(
           collection(firestore, 'tasks'),
@@ -67,6 +77,8 @@ export function TaskProvider({
 
   const addTask = async (description: string): Promise<void> => {
     try {
+      console.debug('Gravando tarefa...');
+
       const task: TaskModel = {
         description,
         userId: Number(session?.userId),
@@ -85,13 +97,40 @@ export function TaskProvider({
     }
   };
 
+  const updateTask = async (id: string, task: TaskModel): Promise<void> => {
+    try {
+      console.debug('Atualizando tarefa...');
+
+      await setDoc(doc(firestore, 'tasks', id), task);
+      toast.success('Tarefa alterada com sucesso');
+
+      const newTasks = [...tasks];
+      const index = newTasks.findIndex((t) => t.id === id);
+
+      index !== -1 && (newTasks[index] = task);
+
+      setTasks(newTasks);
+      setEdit(undefined);
+    } catch (err) {
+      toast.error('Ocorreu um erro ao alterar a tarefa');
+    }
+  };
+
+  const setEdit = (task?: TaskModel) => {
+    setTaskInEditing(task);
+  };
+
   const removeTask = async (id: string): Promise<void> => {
     try {
+      console.debug('Removendo tarefa...');
+
       const newTasks = [...tasks.filter((task) => task.id !== id)];
 
       await deleteDoc(doc(firestore, 'tasks', id));
       toast.success('Tarefa removida com sucesso');
+
       setTasks(newTasks);
+      setEdit(undefined);
     } catch (err) {
       toast.error('Ocorreu um erro ao remover a tarefa');
     }
@@ -101,7 +140,10 @@ export function TaskProvider({
     <TaskContext.Provider
       value={{
         tasks,
+        taskInEditing,
         addTask,
+        updateTask,
+        setEdit,
         removeTask,
       }}
     >
