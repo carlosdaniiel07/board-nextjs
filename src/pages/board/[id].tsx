@@ -1,10 +1,10 @@
-import { GetServerSideProps, NextPage } from 'next';
-import { getSession } from 'next-auth/react';
+import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { TaskDetails } from '../../components';
 import { useTask } from '../../context';
+import authMiddleware from '../../middlewares/auth.middleware';
 import { TaskModel } from '../../models';
 
 const TaskDetailsPage: NextPage = () => {
@@ -38,22 +38,4 @@ const TaskDetailsPage: NextPage = () => {
 
 export default TaskDetailsPage;
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getSession({
-    req,
-  });
-  const isAuthenticated = !!session?.userId;
-
-  if (!isAuthenticated) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps = authMiddleware;

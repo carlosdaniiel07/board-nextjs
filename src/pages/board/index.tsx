@@ -1,7 +1,7 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import { getSession } from 'next-auth/react';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Board, SupportButton, ThankYou } from '../../components';
+import authMiddleware from '../../middlewares/auth.middleware';
 
 const BoardPage: NextPage = () => {
   return (
@@ -20,22 +20,4 @@ const BoardPage: NextPage = () => {
 
 export default BoardPage;
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getSession({
-    req,
-  });
-  const isAuthenticated = !!session?.userId;
-
-  if (!isAuthenticated) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps = authMiddleware;
