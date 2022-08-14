@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 4rem;
+
+  image {
+    display: flex;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4rem;
+
+    .title {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    .subtitle {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+
+      strong {
+        color: #05ba63;
+      }
+    }
+
+    .info {
+      margin-top: 1.5rem;
+      font-weight: bold;
+      background-color: #eeeeee;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+    }
+  }
+}
