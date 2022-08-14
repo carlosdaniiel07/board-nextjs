@@ -1,0 +1,24 @@
+.container {
+  background-color: #20212c;
+  border: 1px solid #20212c;
+  padding: 1.5rem;
+  color: #f2f6fc;
+  border-radius: 14px;
+
+  p {
+    line-height: 150%;
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 1.5rem;
+
+    span {
+      margin-left: 0.5rem;
+      font-size: 0.8rem;
+      color: #FFB800;
+    }
+  }
+}

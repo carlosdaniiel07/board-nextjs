@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ReactElement } from 'react';
 import { FiCalendar, FiEdit2, FiTrash } from 'react-icons/fi';
 import { useTask } from '../../context';
@@ -47,7 +48,9 @@ function TaskItem({ data, onEdit, onRemove }: TaskItemProps) {
 
   return (
     <div className={styles.task}>
-      <p>{data.description}</p>
+      <Link href={`/board/${data.id}`}>
+        <p>{data.description}</p>
+      </Link>
       <div className={styles.footer}>
         <div>
           <div className={styles.date}>

@@ -8,3 +8,4 @@ export * from './TaskForm';
 export * from './TaskForm';
 export * from './ThankYou';
 export * from './SupportButton';
+export * from './TaskDetails';
