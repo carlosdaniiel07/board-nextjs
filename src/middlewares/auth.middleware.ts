@@ -1,11 +1,13 @@
 import { GetServerSideProps } from 'next';
+import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 
 const authMiddleware: GetServerSideProps = async ({ req }) => {
   const session = await getSession({
     req,
   });
-  const isAuthenticated = !!session?.userId;
+  const { userId } = (session ?? {}) as Session & { userId: string };
+  const isAuthenticated = !!userId;
 
   if (!isAuthenticated) {
     return {
@@ -17,7 +19,9 @@ const authMiddleware: GetServerSideProps = async ({ req }) => {
   }
 
   return {
-    props: {},
+    props: {
+      userId: Number(userId),
+    },
   };
 };
 
