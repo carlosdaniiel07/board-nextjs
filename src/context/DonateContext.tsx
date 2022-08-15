@@ -1,5 +1,5 @@
-import React, { ReactElement, useState } from 'react';
-import { addDoc, collection } from 'firebase/firestore';
+import React, { ReactElement, useState, useEffect, useMemo } from 'react';
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { OrderResponseBody } from '@paypal/paypal-js';
 import { useSession } from 'next-auth/react';
 import { firestore } from '../services/firebase';
@@ -7,12 +7,12 @@ import { DonatorModel } from '../models';
 
 type DonateContextProps = {
   isDonator: boolean;
-  setAsDonator(order?: OrderResponseBody): Promise<void>;
+  addDonator(order?: OrderResponseBody): Promise<void>;
 };
 
 const DEFAULT_VALUE: DonateContextProps = {
   isDonator: false,
-  setAsDonator: async () => {},
+  addDonator: async () => {},
 };
 
 export const DonateContext =
@@ -23,10 +23,43 @@ export function DonateProvider({
 }: {
   children: ReactElement | ReactElement[];
 }) {
-  const [isDonator, setIsDonator] = useState(false);
+  const [donators, setDonators] = useState<DonatorModel[]>();
   const { data: session } = useSession();
 
-  const setAsDonator = async (order?: OrderResponseBody): Promise<void> => {
+  useEffect(() => {
+    const loadDonators = async (): Promise<void> => {
+      try {
+        console.debug('Carregando doadores...');
+
+        const dbQuery = query(collection(firestore, 'donators'));
+        const querySnapshot = await getDocs(dbQuery);
+        const data: DonatorModel[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const docData = doc.data();
+          data.push({
+            ...(docData as DonatorModel),
+            createdAt: new Date(docData.createdAt.seconds * 1000),
+            id: doc.id,
+          });
+        });
+
+        setDonators(data);
+      } catch (err) {}
+    };
+
+    !donators && loadDonators();
+  }, [donators]);
+
+  const isDonator = useMemo<boolean>(() => {
+    const userId = Number(session?.userId);
+    const donation = (donators ?? []).find((item) => item.userId === userId);
+    const hasDonation = !!donation;
+
+    return hasDonation;
+  }, [donators, session?.userId]);
+
+  const addDonator = async (order?: OrderResponseBody): Promise<void> => {
     try {
       console.debug('Registrando doação...');
 
@@ -39,9 +72,13 @@ export function DonateProvider({
         orderId,
         createdAt: new Date(),
       };
+      const document = await addDoc(collection(firestore, 'donators'), donator);
+      const createdDonator: DonatorModel = {
+        ...donator,
+        id: document.id,
+      };
 
-      await addDoc(collection(firestore, 'donators'), donator);
-      setIsDonator(true);
+      setDonators([...(donators ?? []), createdDonator]);
     } catch (err) {}
   };
 
@@ -49,7 +86,7 @@ export function DonateProvider({
     <DonateContext.Provider
       value={{
         isDonator,
-        setAsDonator,
+        addDonator,
       }}
     >
       {children}

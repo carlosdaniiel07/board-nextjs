@@ -15,7 +15,7 @@ import { useDonate } from '../../context';
 type DonateProps = {};
 
 export function Donate(props: DonateProps) {
-  const { isDonator, setAsDonator } = useDonate();
+  const { isDonator, addDonator } = useDonate();
   const { data: session } = useSession();
 
   const handleCreateOrder = (
@@ -45,7 +45,7 @@ export function Donate(props: DonateProps) {
         return;
       }
 
-      await setAsDonator(order);
+      await addDonator(order);
     } catch (err) {}
   };
 
