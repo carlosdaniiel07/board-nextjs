@@ -6,11 +6,13 @@ import { firestore } from '../services/firebase';
 import { DonatorModel } from '../models';
 
 type DonateContextProps = {
+  donators?: DonatorModel[];
   isDonator: boolean;
   addDonator(order?: OrderResponseBody): Promise<void>;
 };
 
 const DEFAULT_VALUE: DonateContextProps = {
+  donators: undefined,
   isDonator: false,
   addDonator: async () => {},
 };
@@ -85,6 +87,7 @@ export function DonateProvider({
   return (
     <DonateContext.Provider
       value={{
+        donators,
         isDonator,
         addDonator,
       }}

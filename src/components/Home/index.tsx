@@ -21,7 +21,7 @@ export function Home(props: HomeProps) {
         <strong>100% Gratuita</strong> e online
       </span>
 
-      <Supporters count={4} />
+      <Supporters />
     </section>
   );
 }
