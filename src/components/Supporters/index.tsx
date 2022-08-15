@@ -10,7 +10,7 @@ export function Supporters(props: SupportersProps) {
 
   return (
     <div className={styles.container}>
-      <span>Apoiadores:</span>
+      {donators?.length && <span>Apoiadores:</span>}
       <div className={styles.supporters}>
         {(donators ?? []).map(({ userImageUrl }, index) => (
           <div key={String(index)}>
