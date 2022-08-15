@@ -11,7 +11,7 @@ type TaskDetailsProps = {
 export function TaskDetails({ data }: TaskDetailsProps) {
   return (
     <div className={styles.container}>
-      <p>{data?.description}</p>
+      <p>{data?.description ?? '-'}</p>
 
       <div className={styles.footer}>
         <FiCalendar color='#FFB800' size={16} />

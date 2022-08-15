@@ -3,7 +3,14 @@ import 'dayjs/locale/pt-br';
 
 dayjs.locale('pt-br');
 
-export const format = (date?: Date | string, format?: string): string => {
+export const format = (
+  date?: Date | string,
+  format?: string
+): string | null => {
+  if (!date) {
+    return null;
+  }
+
   return dayjs(date).format(format);
 };
 

@@ -24,10 +24,12 @@ const TaskDetailsPage: NextPage = () => {
     setTask(tasks.find(({ id }) => id === taskId));
   }, [router, tasks]);
 
+  const title = `${task?.description ?? 'Detalhes da tarefa'} - Board`;
+
   return (
     <>
       <Head>
-        <title>{task?.description ?? 'Detalhes da tarefa'} - Board</title>
+        <title>{title}</title>
       </Head>
       <section>
         <TaskDetails data={task} />
