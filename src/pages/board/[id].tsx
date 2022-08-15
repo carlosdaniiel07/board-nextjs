@@ -16,12 +16,13 @@ const TaskDetailsPage: NextPage = () => {
   useEffect(() => {
     const { query } = router;
     const taskId = query.id;
+    const data = tasks.find(({ id }) => id === taskId);
 
-    if (!taskId) {
-      return;
+    if (data) {
+      setTask(data);
+    } else {
+      router.replace('/board');
     }
-
-    setTask(tasks.find(({ id }) => id === taskId));
   }, [router, tasks]);
 
   const title = `${task?.description ?? 'Detalhes da tarefa'} - Board`;
