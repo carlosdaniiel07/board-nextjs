@@ -45,7 +45,7 @@ type TaskItemProps = {
 };
 
 function TaskItem({ data, canEdit, onEdit, onRemove }: TaskItemProps) {
-  const formatDate = (date?: Date): string => {
+  const formatDate = (date?: Date): string | null => {
     return helpers.format(date, 'DD [de] MMMM YYYY');
   };
 
