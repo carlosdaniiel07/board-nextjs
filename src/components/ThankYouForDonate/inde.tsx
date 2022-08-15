@@ -19,7 +19,7 @@ export function ThankYouForDonate({ user }: ThankYouForDonateProps) {
         alt='Foto de perfil'
         title='Foto de perfil'
       />
-      <span>Parabéns agora você é um colaborador!</span>
+      <span>Parabéns agora você é um apoiador!</span>
     </div>
   );
 }
