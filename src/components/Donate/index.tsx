@@ -45,7 +45,7 @@ export function Donate(props: DonateProps) {
         return;
       }
 
-      await setAsDonator();
+      await setAsDonator(order);
     } catch (err) {}
   };
 
