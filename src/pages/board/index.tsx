@@ -1,9 +1,12 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Board, SupportButton, ThankYou } from '../../components';
+import { useDonate } from '../../context';
 import authMiddleware from '../../middlewares/auth.middleware';
 
 const BoardPage: NextPage = () => {
+  const { isDonator } = useDonate();
+
   return (
     <>
       <Head>
@@ -11,7 +14,7 @@ const BoardPage: NextPage = () => {
       </Head>
       <section>
         <Board />
-        <ThankYou />
+        {isDonator && <ThankYou />}
         <SupportButton />
       </section>
     </>

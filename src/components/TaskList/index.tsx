@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ReactElement } from 'react';
 import { FiCalendar, FiEdit2, FiTrash } from 'react-icons/fi';
-import { useTask } from '../../context';
+import { useDonate, useTask } from '../../context';
 import helpers from '../../helpers';
 import { TaskModel } from '../../models';
 
@@ -11,6 +11,7 @@ type TaskListProps = {};
 
 export function TaskList(props: TaskListProps) {
   const { tasks, setEdit, removeTask } = useTask();
+  const { isDonator } = useDonate();
 
   return (
     <div className={styles.container}>
@@ -19,6 +20,7 @@ export function TaskList(props: TaskListProps) {
           <TaskItem
             key={task.id}
             data={task}
+            canEdit={isDonator}
             onEdit={() => {
               helpers.scrollToTop();
               setEdit(task);
@@ -37,29 +39,36 @@ export function TaskList(props: TaskListProps) {
 
 type TaskItemProps = {
   data: TaskModel;
+  canEdit: boolean;
   onEdit(): void;
   onRemove(): Promise<void>;
 };
 
-function TaskItem({ data, onEdit, onRemove }: TaskItemProps) {
+function TaskItem({ data, canEdit, onEdit, onRemove }: TaskItemProps) {
   const formatDate = (date?: Date): string => {
     return helpers.format(date, 'DD [de] MMMM YYYY');
   };
 
   return (
     <div className={styles.task}>
-      <Link href={`/board/${data.id}`}>
+      {canEdit ? (
+        <Link href={`/board/${data.id}`}>
+          <p>{data.description}</p>
+        </Link>
+      ) : (
         <p>{data.description}</p>
-      </Link>
+      )}
       <div className={styles.footer}>
         <div>
           <div className={styles.date}>
             <FiCalendar color='#FFB800' size={18} />
             <span>{formatDate(data.createdAt)}</span>
           </div>
-          <ActionButton label='Editar' onClick={onEdit}>
-            <FiEdit2 color='#FFFFFF' size={18} />
-          </ActionButton>
+          {canEdit && (
+            <ActionButton label='Editar' onClick={onEdit}>
+              <FiEdit2 color='#FFFFFF' size={18} />
+            </ActionButton>
+          )}
         </div>
         <ActionButton label='Excluir' onClick={onRemove}>
           <FiTrash color='#FF3636' size={18} />
